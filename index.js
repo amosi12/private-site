@@ -272,7 +272,7 @@ async function connectToWA() {
           const fullPath = path.join(pluginPath, pluginFile);
           try {
             const raw = fsSync.readFileSync(fullPath);
-            const bom = raw.length >= 3 && raw[0] === 0xEF && raw[1] === 0xBB && raw[2] === 0xBF;
+            const bom = raw.length >= 3 && raw[0] == 0xEF && raw[1] == 0xBB && raw[2] == 0xBF;
             if (bom) {
               console.warn(chalk.yellow(`[ ⚠️ ] Detected UTF-8 BOM in plugin ${pluginFile}. Consider removing BOM.`));
             }
@@ -285,8 +285,10 @@ async function connectToWA() {
 
             try {
               const content = fsSync.readFileSync(fullPath, "utf8");
-              const preview = content.slice(0, 200).replace(/
-/g, "\r").replace(/
+              const preview = content.slice(0, 200)
+                .replace(/
+/g, "\r")
+                .replace(/
 /g, "\n");
               console.log(chalk.cyan(`[ 🧾 ] File preview (first 200 chars): ${preview}`));
             } catch (previewErr) {
