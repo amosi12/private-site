@@ -33,7 +33,7 @@ malvin({
     await malvin.sendMessage(from, {
       image: { url: 'https://github.com/novaxmd/BMB-XMD-DATA/raw/refs/heads/main/nova%20tech.jpg' },
       caption: `
-╭── ❍ ᴍᴀʀɪsᴇʟ❍
+╭──🛡️ NOVA TECH 🛡️
 │ ✦ 𝙽𝚊𝚖𝚎   : *${ownerName}*
 │ ✦ 𝙽𝚞𝚖𝚋𝚎𝚛 : *${ownerNumber}*
 │ ✦ 𝚅𝚎𝚛𝚜𝚒𝚘𝚗 : *${config.version || 'Unknown'}*
