@@ -258,17 +258,48 @@ async function connectToWA() {
       console.log(chalk.green("[ 🤖 ] Nova xmd Connected ✅"));
 
       // Load plugins
+      
+      // Load plugins (improved loader with per-file error reporting)
       const pluginPath = path.join(__dirname, "plugins");
       try {
-        fsSync.readdirSync(pluginPath).forEach((plugin) => {
-          if (path.extname(plugin).toLowerCase() === ".js") {
-            require(path.join(pluginPath, plugin));
+        const pluginFiles = fsSync.readdirSync(pluginPath).filter(f => path.extname(f).toLowerCase() === ".js");
+
+        if (pluginFiles.length === 0) {
+          console.log(chalk.yellow("[ ⚠️ ] No plugins found in", pluginPath));
+        }
+
+        pluginFiles.forEach((pluginFile) => {
+          const fullPath = path.join(pluginPath, pluginFile);
+          try {
+            const raw = fsSync.readFileSync(fullPath);
+            const bom = raw.length >= 3 && raw[0] === 0xEF && raw[1] === 0xBB && raw[2] === 0xBF;
+            if (bom) {
+              console.warn(chalk.yellow(`[ ⚠️ ] Detected UTF-8 BOM in plugin ${pluginFile}. Consider removing BOM.`));
+            }
+
+            require(fullPath);
+            console.log(chalk.green(`[ ✅ ] Plugin loaded:`), pluginFile);
+          } catch (fileErr) {
+            console.error(chalk.red(`[ ❌ ] Failed to load plugin: ${pluginFile}`));
+            console.error(chalk.red(fileErr.stack || fileErr.toString()));
+
+            try {
+              const content = fsSync.readFileSync(fullPath, "utf8");
+              const preview = content.slice(0, 200).replace(/
+/g, "\r").replace(/
+/g, "\n");
+              console.log(chalk.cyan(`[ 🧾 ] File preview (first 200 chars): ${preview}`));
+            } catch (previewErr) {
+              console.log(chalk.yellow(`[ ⚠️ ] Could not read file preview for ${pluginFile}: ${previewErr.message}`));
+            }
           }
         });
-        console.log(chalk.green("[ ✅ ] Plugins loaded successfully"));
+
+        console.log(chalk.green("[ ✅ ] Plugin loading finished"));
       } catch (err) {
-        console.error(chalk.red("[ ❌ ] Error loading plugins:", err.message));
+        console.error(chalk.red("[ ❌ ] Error reading plugins directory:", err.stack || err.message));
       }
+
 
       // Send connection message
 try {
