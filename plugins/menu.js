@@ -99,7 +99,7 @@ malvin({
     // Add sorted categories with stylized text
     for (const cat of Object.keys(categories).sort()) {
       const emoji = emojiByCategory[cat] || '💬';
-      menu += `\n\n*╔ 🛡️ ${emoji} ${toUpperStylized(cat)} ${toUpperStylized('Menu')} 』──⊷*\n`;
+      menu += `\n\n*╔ 🛡️ ${emoji} ${toUpperStylized(cat)} ${toUpperStylized('Menu')} 』🛡️*\n`;
       for (const cmd of categories[cat].sort()) {
         menu += `*┃❍┃• ${prefix}${cmd}*\n`;
       }
