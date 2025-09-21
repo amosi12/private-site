@@ -14,8 +14,8 @@ const API_KEYS = [
 ];
 
 malvin({
-  pattern: "url",
-  alias: ["imgtourl", "imgurl", "url1", "uploadimg"],
+  pattern: "url2",
+  alias: ["imgtourl", "imgurl", "url2", "uploadimg"],
   react: "🔄",
   desc: "Convert an image to a URL using ImgBB.",
   category: "utility",
@@ -72,8 +72,8 @@ malvin({
 
 
 malvin({
-  pattern: "url2",
-  alias: ["imgtourl2", "imgurl2", "url3", "geturl2", "upload"],
+  pattern: "url",
+  alias: ["imgtourl2", "imgurl1", "url3", "geturl2", "upload"],
   react: "📤",
   desc: "Upload media to Catbox and return a direct URL.",
   category: "utility",
