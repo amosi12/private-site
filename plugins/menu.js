@@ -23,7 +23,6 @@ const normalize = (str) => str.toLowerCase().replace(/\s+menu$/, '').trim();
 const emojiByCategory = {
   ai: '🤖',
   anime: '🍥',
-  audio: '🎧',
   bible: '📖',
   download: '⬇️',
   downloader: '📥',
@@ -76,14 +75,14 @@ malvin({
     };
 
     let menu = `
-*┏────〘 ᴍᴇʀᴄᴇᴅᴇs 〙───⊷*
+*┏────〘 𝗡𝗢𝗩𝗔-𝗫𝗠𝗗 〙───⊷*
 *┃ ᴜꜱᴇʀ : @${sender.split("@")[0]}*
 *┃ ʀᴜɴᴛɪᴍᴇ : ${uptime()}*
 *┃ ᴍᴏᴅᴇ : ${config.MODE}*
 *┃ ᴘʀᴇғɪx : 「 ${config.PREFIX}」* 
 *┃ ᴏᴡɴᴇʀ : ${config.OWNER_NAME}*
 *┃ ᴘʟᴜɢɪɴꜱ : 『 ${commands.length} 』*
-*┃ ᴅᴇᴠ : ᴍᴀʀɪsᴇʟ*
+*┃ ᴅᴇᴠ : 𝙽𝙾𝚅𝙰-𝚇𝙼𝙳*
 *┃ ᴠᴇʀꜱɪᴏɴ : 2.0.0*
 *┗──────────────⊷*`;
 
@@ -99,12 +98,12 @@ malvin({
 
     // Add sorted categories with stylized text
     for (const cat of Object.keys(categories).sort()) {
-      const emoji = emojiByCategory[cat] || '💫';
-      menu += `\n\n*┏─『 ${emoji} ${toUpperStylized(cat)} ${toUpperStylized('Menu')} 』──⊷*\n`;
+      const emoji = emojiByCategory[cat] || '💬';
+      menu += `\n\n*╔ 🛡️ ${emoji} ${toUpperStylized(cat)} ${toUpperStylized('Menu')} 』──⊷*\n`;
       for (const cmd of categories[cat].sort()) {
-        menu += `*│ ${prefix}${cmd}*\n`;
+        menu += `*┃❍┃• ${prefix}${cmd}*\n`;
       }
-      menu += `*┗──────────────⊷*`;
+      menu += `*╚══════════════╝*`;
     }
 
     menu += `\n\n> ${config.DESCRIPTION || toUpperStylized('Explore the bot commands!')}`;
@@ -131,29 +130,6 @@ malvin({
       },
       { quoted: mek }
     );
-
-    // Send audio if configured
-    if (config.MENU_AUDIO_URL) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      await malvin.sendMessage(
-        from,
-        {
-          audio: { url: config.MENU_AUDIO_URL },
-          mimetype: 'audio/mp4',
-          ptt: true,
-          contextInfo: {
-            mentionedJid: [sender],
-            forwardingScore: 999,
-            isForwarded: true,
-            forwardedNewsletterMessageInfo: {
-              newsletterName: config.OWNER_NAME || toUpperStylized('marisel'),
-              serverMessageId: 143
-            }
-          }
-        },
-        { quoted: mek }
-      );
-    }
 
   } catch (e) {
     console.error('Menu Error:', e.message);
