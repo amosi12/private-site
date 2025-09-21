@@ -257,18 +257,25 @@ async function connectToWA() {
     } else if (connection === "open") {
       console.log(chalk.green("[ 🤖 ] Nova xmd Connected ✅"));
 
-      // Load plugins
-      const pluginPath = path.join(__dirname, "plugins");
+     // Load plugins with error reporting
+const pluginPath = path.join(__dirname, "plugins");
+try {
+  fsSync.readdirSync(pluginPath).forEach((plugin) => {
+    if (path.extname(plugin).toLowerCase() === ".js") {
+      const pluginFile = path.join(pluginPath, plugin);
       try {
-        fsSync.readdirSync(pluginPath).forEach((plugin) => {
-          if (path.extname(plugin).toLowerCase() === ".js") {
-            require(path.join(pluginPath, plugin));
-          }
-        });
-        console.log(chalk.green("[ ✅ ] Plugins loaded successfully"));
+        console.log(chalk.cyan(`[ 🔄 ] Loading plugin: ${plugin}`));
+        require(pluginFile);
+        console.log(chalk.green(`[ ✅ ] Loaded: ${plugin}`));
       } catch (err) {
-        console.error(chalk.red("[ ❌ ] Error loading plugins:", err.message));
+        console.error(chalk.red(`[ ❌ ] Failed to load plugin: ${plugin}`));
+        console.error(chalk.red(`Reason: ${err.message}`));
       }
+    }
+  });
+} catch (err) {
+  console.error(chalk.red("[ ❌ ] Error scanning plugins folder:", err.message));
+}
 
       // Send connection message
 try {
@@ -276,8 +283,8 @@ try {
   const jid = malvin.decodeJid(malvin.user.id);
   if (!jid) throw new Error("Invalid JID for bot");
 
-  const botname = "ᴍᴇʀᴄᴇᴅᴇs";
-  const ownername = "ᴍᴀʀɪsᴇʟ";
+  const botname = "𝙽𝙾𝚅𝙰-𝚇𝙼𝙳";
+  const ownername = "𝙽𝙾𝚅𝙰-𝚇𝙼𝙳";
   const prefix = getPrefix();
   const username = "betingrich4";
   const mrmalvin = `https://github.com/${username}`;
